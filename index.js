@@ -47,6 +47,12 @@ Spotify.lookup = function(uri, extras, cb) {
 	}
 }
 
+/**
+ * Connects to ws.spotify.com/lookup
+ * @param  {String|Object} uri URI string or object from parsed URI.
+ * @param  {Function} cb
+ * @return {String}        JSON response from spotify
+ */
 Spotify.ws = function(uri, cb) {
 	if (typeof uri !== 'string') uri = Spotify.uri.formatURI(uri);
 
@@ -58,6 +64,13 @@ Spotify.ws = function(uri, cb) {
 	});
 }
 
+/**
+ * Gets the URL of the album art for any spotify URI.
+ * @param  {String|Object} uri  URI string or object from parsed URI.
+ * @param  {String|Number} size Size of the cover. see the Spotify.coverSize object for available sizes.
+ * @param  {Function} cb
+ * @return {String}        Cover URL
+ */
 Spotify.cover = function(uri, size, cb) {
 	if (typeof size === 'function') {
 		cb = size;
@@ -77,6 +90,9 @@ Spotify.cover = function(uri, size, cb) {
 	});
 }
 
+// Add Spotify.<endpoint>, Spotify.<endpoint>.cover and Spotify.<endpoint>.flatten,
+// where endpoint is track, album and artist.
+// eg: Spotify.track(); Spotify.artist.cover(); Spotify.album.flatten();
 ;['track', 'album', 'artist'].forEach(function(endpoint, i, endpoints) {
 	Spotify[endpoint] = function(uri, extras, cb) {
 		if (typeof extras === 'function') {
@@ -156,6 +172,7 @@ Spotify.playlist = function(user, id, cb) {
  * @param  {Function} cb
  * @return {Array}        Array of tracks
  * @todo Arists queries return a lot of duplicate albums (for different territories). Need to extract duplicates somehow.
+ * @todo Make it possible to stream the result. We do many requests which can take a while.
  */
 Spotify.flatten = function(uri, cb) {
 	if (Array.isArray(uri)) return Spotify.flattenList(uri, cb);
