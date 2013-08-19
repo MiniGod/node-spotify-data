@@ -1,0 +1,9 @@
+{
+  "name": "spotify-data",
+  "version": "0.0.1",
+  "dependencies": {
+    "request": "~2.27.0",
+    "spotify-uri": "~0.1.0",
+    "cheerio": "~0.12.1"
+  }
+}
