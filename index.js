@@ -112,9 +112,6 @@ Spotify.cover = function(uri, size, cb) {
  * @return {Array}         Array of tracks in playlist
  */
 Spotify.playlist = function(user, id, cb) {
-	// @TODO: return object similar to the artist or album results.
-	//embed.spotify.com/?uri=spotify:user:ltwee:playlist:3uV2fTdhYrnyKGRm59OADG
-	
 	var tracks = [];
 
 	var track = null;
