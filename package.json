@@ -1,6 +1,17 @@
 {
   "name": "spotify-data",
   "version": "0.0.1",
+  "description": "Simple spotify metadata. Supports playlist, cover art, artist, album and track.",
+  "keywords": [
+    "spotify",
+    "metadata",
+    "playlist",
+    "cover art"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MiniGod/node-spotify-data.git"
+  },
   "dependencies": {
     "request": "~2.27.0",
     "spotify-uri": "~0.1.0",
