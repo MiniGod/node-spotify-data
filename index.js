@@ -164,7 +164,8 @@ Spotify.playlist = function(user, id, cb) {
 
 		var playlist = {
 			playlist: {
-				'playlist-id': Spotify.uri.formatURI({type:'playlist', }),
+				// spotify-uri supports parsing of playlist, but not formating -.-
+				'playlist-id': ['spotify', 'user', user, 'playlist', id].join(':'),
 				title: $('div.title-content').text(),
 				tracks: tracks,
 			},
