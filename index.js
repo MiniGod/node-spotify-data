@@ -33,7 +33,7 @@ Spotify.coverSize = {
  * @param  {Function} cb  Callback
  */
 Spotify.lookup = function(uri, extras, cb) {
-	var parsed = Spotify.uri.parse(uri);
+	var parsed = typeof uri === 'string' ? Spotify.uri.parse(uri) : uri;
 
 	// Playlist
 	if (parsed.type === 'playlist') {
@@ -144,7 +144,7 @@ Spotify.playlist = function(user, id, cb) {
 			el = $(el);
 			var track = {
 				href: Spotify.uri.formatURI({type:'track',id: el.attr('data-track')}),
-				duration: el.attr('data-duration-ms'),
+				duration: parseInt(el.attr('data-duration-ms')),
 				cover: el.attr('data-ca'),
 				artists: []
 			};
@@ -162,8 +162,31 @@ Spotify.playlist = function(user, id, cb) {
 			tracks.push(track);
 		});
 
-		cb(null, tracks);
+		var playlist = {
+			playlist: {
+				'playlist-id': Spotify.uri.formatURI({type:'playlist', }),
+				title: $('div.title-content').text(),
+				tracks: tracks,
+			},
+			info: {
+				type: 'playlist'
+			}
+		}
+
+		cb(null, playlist);
 	});
+}
+
+Spotify.playlist.cover = function(user, id, cb) {
+	// spotify-uri supports parsing of playlist, but not formating -.-
+	var uri = ['spotify', 'user', user, 'playlist', id].join(':');
+	Spotify.cover(uri, cb);
+}
+
+Spotify.playlist.flatten = function(user, id, cb) {
+	// spotify-uri supports parsing of playlist, but not formating -.-
+	var uri = ['spotify', 'user', user, 'playlist', id].join(':');
+	Spotify.flatten(uri, cb);
 }
 
 /**
@@ -183,6 +206,8 @@ Spotify.flatten = function(uri, cb) {
 			cb(null, [res.track]);
 		} else if (res.info.type === 'album') {
 			cb(null, res.album.tracks);
+		} else if (res.info.type === 'playlist') {
+			cb(null, res.playlist.tracks);
 		} else if (res.info.type === 'artist') {
 			var albums = [];
 			res.artist.albums.forEach(function(album) {
