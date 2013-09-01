@@ -206,7 +206,23 @@ Spotify.flatten = function(uri, cb) {
 		if (res.info.type === 'track') {
 			cb(null, [res.track]);
 		} else if (res.info.type === 'album') {
-			cb(null, res.album.tracks);
+			// Add album info to every track
+			var album = res.album.tracks.map(function(track, i) {
+				track.album = {
+					href: res.album.href,
+					released: res.album.released,
+					name: res.album.name
+				}
+
+				track['track-number'] = i+1;
+
+				// Expecting that every track in the album has the same availability. Not sure if this is true.
+				track.availability = res.album.availability;
+
+				return track;
+			});
+
+			cb(null, album);
 		} else if (res.info.type === 'playlist') {
 			cb(null, res.playlist.tracks);
 		} else if (res.info.type === 'artist') {
